@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+Route::namespace('Vehicle')->prefix('vehicles')->group(function () {
+
+    Route::get('/{model_year}/{manufacturer}/{model}', 'VehicleController@vehicles');
+
 });
