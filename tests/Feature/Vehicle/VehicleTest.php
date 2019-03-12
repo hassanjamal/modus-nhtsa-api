@@ -45,7 +45,7 @@ class VehicleTest extends TestCase
      *
      * @return void
      */
-    public function test_vehicle_variants_get_api_call_for_desired_format(): void
+    public function test_vehicle_variants_get_api_call_for_desired_format()
     {
         $response = $this->json('GET', '/vehicles/2015/Audi/A3');
 
