@@ -7,7 +7,7 @@ use App\Http\Controllers\Controller;
 
 class VehicleController extends Controller
 {
-    public function vehicles($modelYear, $manufacturer, $model)
+    public function getVehicleVariants($modelYear, $manufacturer, $model)
     {
         return response()->json([], 200);
     }

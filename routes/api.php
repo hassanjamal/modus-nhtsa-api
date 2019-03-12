@@ -15,6 +15,6 @@ use Illuminate\Http\Request;
 
 Route::namespace('Vehicle')->prefix('vehicles')->group(function () {
 
-    Route::get('/{model_year}/{manufacturer}/{model}', 'VehicleController@vehicles');
+    Route::get('/{model_year}/{manufacturer}/{model}', 'VehicleController@getVehicleVariants');
 
 });

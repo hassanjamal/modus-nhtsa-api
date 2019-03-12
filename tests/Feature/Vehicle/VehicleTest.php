@@ -9,15 +9,15 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class VehicleTest extends TestCase
 {
     /**
-     * Test valid route to get vehicle info
+     * Test valid route to get vehicle variants
      *
      * @return void
      */
-    public function test_valid_route_to_get_vehicles_info_for_a_manufacturer_model_and_year()
+    public function test_valid_route_to_get_vehicle_variant_for_a_manufacturer_model_and_year()
     {
         $response = $this->get('/vehicles/2015/Toyota/Yaris');
 
-        $response->assertStatus(200);
+        $response->assertOk();
     }
 
     /**
@@ -38,6 +38,27 @@ class VehicleTest extends TestCase
             $response->assertStatus(404);
 
         }
+    }
+
+    /**
+     * Test if manufacturer , model and model year is provided then API returns data in required format using a GET call
+     *
+     * @return void
+     */
+    public function test_vehicle_variants_get_api_call_for_desired_format(): void
+    {
+        $response = $this->json('GET', '/vehicles/2015/Audi/A3');
+
+        $response->assertStatus(200)
+            ->assertJsonStructure([
+                'Count',
+                'Results' => [
+                    '*' => [
+                        'Description',
+                        'VehicleId'
+                    ]
+                ]
+            ]);
     }
 
 }
