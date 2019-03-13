@@ -38,3 +38,6 @@ The underlying API that is to be used here is the [NHTSA NCAP 5 Star Safety Rati
  $ ./vendor/bin/phpunit
  ```
  
+ ## Assignment Details
+ * Requirement 1 [Github Issue Link](https://github.com/hassanjamal/modus-nhtsa-api/issues/1)
+ 
