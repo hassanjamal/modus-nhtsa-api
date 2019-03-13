@@ -3,8 +3,11 @@
 namespace Tests\Feature\Vehicle;
 
 use Tests\TestCase;
-use Illuminate\Foundation\Testing\WithFaker;
-use Illuminate\Foundation\Testing\RefreshDatabase;
+use GuzzleHttp\Client;
+use GuzzleHttp\HandlerStack;
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Handler\MockHandler;
+use App\NHTSA\VehicleSafetyRatingService;
 
 class VehicleTest extends TestCase
 {
@@ -29,6 +32,7 @@ class VehicleTest extends TestCase
     public function test_invalid_route_should_return_404()
     {
         $urls = [
+            '/vehicles/undefined/Toyota/Yaris',
             '/vehicles/2015/Toyota',
             '/vehicles/2015',
         ];
@@ -60,5 +64,73 @@ class VehicleTest extends TestCase
                 ]
             ]);
     }
+
+    public function test_no_result_for_2013_ford_crown_victoria()
+    {
+        $api_response = json_encode([
+            'Count' => 0,
+            'Message' => "No results found for this request\"",
+            'Results' =>[]
+        ]);
+        $this->app->bind(VehicleSafetyRatingService::class , function ($app) use ($api_response){
+            $mock = new MockHandler([
+                new Response(200, [], $api_response)]);
+
+            $handler = HandlerStack::create($mock);
+            $guzzleClient = new Client(['handler' => $handler]);
+            return new VehicleSafetyRatingService($guzzleClient);
+        });
+        $response = $this->json('GET', '/vehicles/2013/Ford/Crown Victoria');
+        $response
+            ->assertOk()
+            ->assertExactJson([
+                'Count' => 0,
+                'Results' =>[]
+            ]);
+    }
+
+    public function test_result_for_2015_audi_a3()
+    {
+        $api_response = json_encode([
+            'Count' => 2,
+            'Message' => "Results returned successfully",
+            'Results' =>[
+                '0' => array(
+                    'VehicleDescription' => "2015 Audi A3 4 DR AWD",
+                    'VehicleId' => 9403
+                ),
+                '1' => [
+                    'VehicleDescription' => "2015 Audi A3 4 DR FWD",
+                    'VehicleId' => 9408
+                ],
+            ]
+        ]);
+
+        $this->app->bind(VehicleSafetyRatingService::class , function ($app) use ($api_response){
+            $mock = new MockHandler([
+                new Response(200, [], $api_response)]);
+
+            $handler = HandlerStack::create($mock);
+            $guzzleClient = new Client(['handler' => $handler]);
+            return new VehicleSafetyRatingService($guzzleClient);
+        });
+        $response = $this->json('GET', '/vehicles/2015/Audi/A3');
+        $response
+            ->assertOk()
+            ->assertExactJson([
+                'Count' => 2,
+                'Results' =>[
+                        '0' => [
+                            'Description' => "2015 Audi A3 4 DR AWD",
+                            'VehicleId' => 9403
+                        ],
+                        '1' => [
+                            'Description' => "2015 Audi A3 4 DR FWD",
+                            'VehicleId' => 9408
+                        ],
+                ]
+            ]);
+    }
+
 
 }

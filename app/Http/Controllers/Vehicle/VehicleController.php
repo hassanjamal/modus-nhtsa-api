@@ -21,6 +21,7 @@ class VehicleController extends Controller
         $this->vehicleSafetyRatingService = $vehicleSafetyRatingService;
     }
 
+
     /**
      * @param $modelYear
      * @param $manufacturer

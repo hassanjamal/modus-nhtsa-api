@@ -6,18 +6,25 @@ namespace App\NHTSA;
 use GuzzleHttp\Client;
 
 /**
- * @property Client client
  */
-abstract class BaseService
+class BaseService
 {
-    protected $client;
+    protected $apiClient;
+
+    protected $vehicleYearMakeModelUri;
+
     /**
-     * BaseService constructor.
+     * @param Client $apiClient
      */
-    public function __construct()
+    public function __construct(Client $apiClient)
     {
-        $this->client = new Client([
-            'base_url' => config('nhtsa.api_base_url')
-        ]);
+        $this->apiClient = $apiClient;
+        $this->vehicleYearMakeModelUri = '';
     }
+
+    public function setVehicleYearMakeModelUrl($modelYear, $manufacturer, $model)
+    {
+        $this->vehicleYearMakeModelUri = config('nhtsa.api_base_url').'SafetyRatings/modelyear/' . $modelYear . '/make/' . $manufacturer . '/model/' . $model;
+    }
+
 }
