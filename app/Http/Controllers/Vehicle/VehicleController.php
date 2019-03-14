@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Vehicle;
 
 use App\Http\Controllers\Controller;
 use App\NHTSA\VehicleSafetyRatingService;
+use Illuminate\Http\Request;
 
 class VehicleController extends Controller
 {
@@ -31,5 +32,14 @@ class VehicleController extends Controller
     public function getVehicleVariants($modelYear, $manufacturer, $model)
     {
         return response()->json($this->vehicleSafetyRatingService->getVehicleVariants($modelYear ,$manufacturer, $model));
+    }
+
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function postVehicle(Request $request)
+    {
+        return response()->json([], 200);
     }
 }
