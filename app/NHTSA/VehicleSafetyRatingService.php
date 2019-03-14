@@ -34,7 +34,7 @@ class VehicleSafetyRatingService extends BaseService
 
                 $results = collect($apiData['Results'])->map(function ($item) use ($data , $withRating) {
                     $vehicle = [];
-                    if($withRating || $withRating === 'true'){
+                    if($withRating === 'true'){
                         $vehicle['CrashRating'] = $this->getRatingByVehicleId($item->VehicleId);
                     }
                     $vehicle['Description'] = $item->VehicleDescription;

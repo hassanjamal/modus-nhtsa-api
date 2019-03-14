@@ -32,10 +32,10 @@ class VehicleController extends Controller
      */
     public function getVehicleVariants($modelYear, $manufacturer, $model)
     {
-        if (!$withRating = \request()->has('withRating')) {
+        if (! \request()->has('withRating')) {
             return response()->json($this->vehicleSafetyRatingService->getVehicleVariants($modelYear, $manufacturer, $model));
         }
-        return response()->json($this->vehicleSafetyRatingService->getVehicleVariantsWithRatings($modelYear, $manufacturer, $model, $withRating));
+        return response()->json($this->vehicleSafetyRatingService->getVehicleVariantsWithRatings($modelYear, $manufacturer, $model, \request()->get('withRating')));
     }
 
     /**
