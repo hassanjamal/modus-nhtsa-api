@@ -28,15 +28,20 @@ class VehicleController extends Controller
      * @param $manufacturer
      * @param $model
      * @return \Illuminate\Http\JsonResponse
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function getVehicleVariants($modelYear, $manufacturer, $model)
     {
-        return response()->json($this->vehicleSafetyRatingService->getVehicleVariants($modelYear, $manufacturer, $model));
+        if (! \request()->has('withRating')) {
+            return response()->json($this->vehicleSafetyRatingService->getVehicleVariants($modelYear, $manufacturer, $model));
+        }
+        return response()->json($this->vehicleSafetyRatingService->getVehicleVariantsWithRatings($modelYear, $manufacturer, $model, \request()->get('withRating')));
     }
 
     /**
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function postVehicle(Request $request)
     {
