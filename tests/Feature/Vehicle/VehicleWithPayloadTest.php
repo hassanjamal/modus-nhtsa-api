@@ -8,12 +8,8 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 
 class VehicleWithPayloadTest extends TestCase
 {
-    /**
-     * Test valid route to get all vehicle
-     *
-     * @return void
-     */
-    public function test_valid_route_to_get_allvehicles()
+
+    public function test_with_2015_audi_a3_payload()
     {
         $payLoad = [
             'modelYear' => 2015,
@@ -22,7 +18,60 @@ class VehicleWithPayloadTest extends TestCase
         ];
 
         $response = $this->json('POST','/vehicles', $payLoad);
+        $response->assertOk()
+            ->assertJsonStructure([
+                'Count',
+                'Results'
+            ]);
 
-        $response->assertOk();
+    }
+
+    public function test_with_2015_toyota_yaris_payload()
+    {
+        $payLoad = [
+            'modelYear' => 2015,
+            'manufacturer' => 'Toyoto',
+            'model' => 'Yaris'
+        ];
+
+        $response = $this->json('POST','/vehicles', $payLoad);
+        $response->assertOk()
+            ->assertJsonStructure([
+                'Count',
+                'Results'
+            ]);
+
+    }
+
+    public function test_with_honda_accord_payload()
+    {
+        $payLoad = [
+            'manufacturer' => 'Honda',
+            'model' => 'Accord'
+        ];
+
+        $response = $this->json('POST','/vehicles', $payLoad);
+        $response
+            ->assertOk()
+            ->assertExactJson([
+                'Count' => 0,
+                'Results' =>[]
+            ]);
+    }
+
+    public function test_with_invalid_year_payload()
+    {
+        $payLoad = [
+            'modelYear' => 1025,
+            'manufacturer' => 'Toyoto',
+            'model' => 'Yaris'
+        ];
+        $response = $this->json('POST','/vehicles', $payLoad);
+        $response
+            ->assertOk()
+            ->assertExactJson([
+                'Count' => 0,
+                'Results' =>[]
+            ]);
     }
 }

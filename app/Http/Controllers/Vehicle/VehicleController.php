@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\Vehicle;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\NHTSA\VehicleSafetyRatingService;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class VehicleController extends Controller
 {
@@ -22,7 +23,6 @@ class VehicleController extends Controller
         $this->vehicleSafetyRatingService = $vehicleSafetyRatingService;
     }
 
-
     /**
      * @param $modelYear
      * @param $manufacturer
@@ -31,7 +31,7 @@ class VehicleController extends Controller
      */
     public function getVehicleVariants($modelYear, $manufacturer, $model)
     {
-        return response()->json($this->vehicleSafetyRatingService->getVehicleVariants($modelYear ,$manufacturer, $model));
+        return response()->json($this->vehicleSafetyRatingService->getVehicleVariants($modelYear, $manufacturer, $model));
     }
 
     /**
@@ -40,6 +40,19 @@ class VehicleController extends Controller
      */
     public function postVehicle(Request $request)
     {
-        return response()->json([], 200);
+        $validator = Validator::make($request->all(), [
+            'modelYear' => ['required', 'regex:/^(19|20)\d{2}$/'],
+            'manufacturer' => 'required',
+            'model' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'Count' => 0,
+                'Results' => []
+            ]);
+        }
+
+        return response()->json($this->vehicleSafetyRatingService->getVehicleVariants($request->modelYear, $request->manufacturer, $request->model));
     }
 }
