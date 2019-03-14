@@ -15,7 +15,7 @@ use Illuminate\Http\Request;
 
 Route::namespace('Vehicle')->prefix('vehicles')->group(function () {
 
-    Route::get('/{model_year}/{manufacturer}/{model}', 'VehicleController@getVehicleVariants')
+    Route::get('/{model_year}/{manufacturer}/{model}/{withRating?}', 'VehicleController@getVehicleVariants')
         ->where(['model_year' =>'^(19|20)\d{2}$']);
 
     Route::post('/', 'VehicleController@postVehicle');
