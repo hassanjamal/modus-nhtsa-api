@@ -2,7 +2,6 @@
 
 namespace App\NHTSA;
 
-
 use Illuminate\Support\Facades\Log;
 
 class VehicleSafetyRatingService extends BaseService
@@ -34,7 +33,7 @@ class VehicleSafetyRatingService extends BaseService
 
                 $results = collect($apiData['Results'])->map(function ($item) use ($data , $withRating) {
                     $vehicle = [];
-                    if($withRating === 'true'){
+                    if ($withRating === 'true') {
                         $vehicle['CrashRating'] = $this->getRatingByVehicleId($item->VehicleId);
                     }
                     $vehicle['Description'] = $item->VehicleDescription;
@@ -88,5 +87,4 @@ class VehicleSafetyRatingService extends BaseService
 
         return self::NOT_RATED_VALUE_FOR_A_VEHICLE_ID;
     }
-
 }

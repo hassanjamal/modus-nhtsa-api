@@ -40,7 +40,6 @@ class VehicleTest extends TestCase
         foreach ($urls as $url) {
             $response = $this->get($url);
             $response->assertStatus(404);
-
         }
     }
 
@@ -69,10 +68,10 @@ class VehicleTest extends TestCase
     {
         $api_response = json_encode([
             'Count' => 0,
-            'Message' => "No results found for this request\"",
-            'Results' =>[]
+            'Message' => 'No results found for this request"',
+            'Results' => []
         ]);
-        $this->app->bind(VehicleSafetyRatingService::class , function ($app) use ($api_response){
+        $this->app->bind(VehicleSafetyRatingService::class, function ($app) use ($api_response) {
             $mock = new MockHandler([
                 new Response(200, [], $api_response)]);
 
@@ -85,7 +84,7 @@ class VehicleTest extends TestCase
             ->assertOk()
             ->assertExactJson([
                 'Count' => 0,
-                'Results' =>[]
+                'Results' => []
             ]);
     }
 
@@ -93,20 +92,20 @@ class VehicleTest extends TestCase
     {
         $api_response = json_encode([
             'Count' => 2,
-            'Message' => "Results returned successfully",
-            'Results' =>[
-                '0' => array(
-                    'VehicleDescription' => "2015 Audi A3 4 DR AWD",
+            'Message' => 'Results returned successfully',
+            'Results' => [
+                '0' => [
+                    'VehicleDescription' => '2015 Audi A3 4 DR AWD',
                     'VehicleId' => 9403
-                ),
+                ],
                 '1' => [
-                    'VehicleDescription' => "2015 Audi A3 4 DR FWD",
+                    'VehicleDescription' => '2015 Audi A3 4 DR FWD',
                     'VehicleId' => 9408
                 ],
             ]
         ]);
 
-        $this->app->bind(VehicleSafetyRatingService::class , function ($app) use ($api_response){
+        $this->app->bind(VehicleSafetyRatingService::class, function ($app) use ($api_response) {
             $mock = new MockHandler([
                 new Response(200, [], $api_response)]);
 
@@ -119,18 +118,16 @@ class VehicleTest extends TestCase
             ->assertOk()
             ->assertExactJson([
                 'Count' => 2,
-                'Results' =>[
-                        '0' => [
-                            'Description' => "2015 Audi A3 4 DR AWD",
-                            'VehicleId' => 9403
-                        ],
-                        '1' => [
-                            'Description' => "2015 Audi A3 4 DR FWD",
-                            'VehicleId' => 9408
-                        ],
+                'Results' => [
+                    '0' => [
+                        'Description' => '2015 Audi A3 4 DR AWD',
+                        'VehicleId' => 9403
+                    ],
+                    '1' => [
+                        'Description' => '2015 Audi A3 4 DR FWD',
+                        'VehicleId' => 9408
+                    ],
                 ]
             ]);
     }
-
-
 }

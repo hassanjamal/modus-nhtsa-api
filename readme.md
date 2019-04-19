@@ -22,11 +22,11 @@ The underlying API that is to be used here is the [NHTSA NCAP 5 Star Safety Rati
  # Change working directory
  $ cd modus-nhtsa-api
  
- # Create ENV file and generate key
- $ cp .env.example .env && php artisan key:generate
- 
  # Install Composer dependencies
  $ composer install
+
+ # Create ENV file and generate key
+ $ cp .env.example .env && php artisan key:generate
  ```
  
  #### Run development server

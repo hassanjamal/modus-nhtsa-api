@@ -2,7 +2,6 @@
 
 namespace App\NHTSA;
 
-
 use GuzzleHttp\Client;
 
 /**
@@ -21,17 +20,16 @@ class BaseService
     {
         $this->apiClient = $apiClient;
         $this->vehicleYearMakeModelUri = '';
-        $this->vehicleRatingUri= '';
+        $this->vehicleRatingUri = '';
     }
 
     public function setVehicleYearMakeModelUrl($modelYear, $manufacturer, $model)
     {
-        $this->vehicleYearMakeModelUri = config('nhtsa.api_base_url').'SafetyRatings/modelyear/' . $modelYear . '/make/' . $manufacturer . '/model/' . $model;
+        $this->vehicleYearMakeModelUri = config('nhtsa.api_base_url') . 'SafetyRatings/modelyear/' . $modelYear . '/make/' . $manufacturer . '/model/' . $model;
     }
 
     public function setVehicleRatingUri($vehicleId)
     {
-        $this->vehicleRatingUri = config('nhtsa.api_base_url').'SafetyRatings/VehicleId/'.$vehicleId;
+        $this->vehicleRatingUri = config('nhtsa.api_base_url') . 'SafetyRatings/VehicleId/' . $vehicleId;
     }
-
 }
